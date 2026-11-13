@@ -137,3 +137,63 @@
       gameState = "playing";
     }
 
+
+    /* ---------------------------------------------------
+       PART 3: KEYBOARD CONTROLS
+       --------------------------------------------------- */
+
+    // This runs every time a key is PRESSED DOWN
+    document.addEventListener("keydown", function (e) {
+
+      // Remember that this key is being held
+      keys[e.key.toLowerCase()] = true;
+
+
+      // SPACE = shoot a bullet (only while playing)
+      if (e.key === " " && gameState === "playing") {
+
+        // Make a new bullet at the front of the ship
+        var newBullet = {
+          x: player.x + 18,
+          y: player.y,
+          width: 4,
+          height: 12
+        };
+
+        // Add it to the bullets list
+        bullets.push(newBullet);
+      }
+
+
+      // ENTER = start the game or go to the next level
+      if (e.key === "Enter") {
+
+        if (gameState === "levelup") {
+          // We beat a level, so start the next one
+          startLevel();
+        }
+        else if (gameState !== "playing") {
+          // We are on the start, game over or win screen,
+          // so reset everything and begin a new game
+          level = 1;
+          score = 0;
+          lives = 3;
+          startLevel();
+        }
+      }
+
+
+      // Stop the page from scrolling when we press space or arrows
+      if (e.key === " " || e.key.indexOf("Arrow") === 0) {
+        e.preventDefault();
+      }
+    });
+
+
+    // This runs every time a key is LET GO
+    document.addEventListener("keyup", function (e) {
+
+      // Remember that this key is no longer held
+      keys[e.key.toLowerCase()] = false;
+    });
+
