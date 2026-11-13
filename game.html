@@ -404,3 +404,78 @@
         }
       }
     }
+
+
+
+    /* ---------------------------------------------------
+       PART 6: DRAWING
+       Paints everything onto the screen.
+       --------------------------------------------------- */
+
+    // Draw every box in a list using one colour
+    function drawBoxes(list, colour) {
+
+      // Choose the colour for our pen
+      ctx.fillStyle = colour;
+
+      // Draw each box as a filled rectangle
+      for (var i = 0; i < list.length; i++) {
+        ctx.fillRect(list[i].x, list[i].y, list[i].width, list[i].height);
+      }
+    }
+
+
+    // Write a line of text in the middle of the screen
+    function message(text, y) {
+      ctx.fillStyle = "white";
+      ctx.font = "28px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText(text, 300, y);
+    }
+
+
+    // Draw the whole screen (runs every frame)
+    function draw() {
+
+      // First, wipe the screen black
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, 0, 600, 600);
+
+
+      // Draw the game, but not on the very first start screen
+      if (gameState !== "start") {
+
+        // Player = blue, bullets = green, rocks = grey, enemies = red
+        // (the player is put in [ ] to make it a list of one)
+        drawBoxes([player], "dodgerblue");
+        drawBoxes(bullets, "lime");
+        drawBoxes(rocks, "gray");
+        drawBoxes(enemies, "red");
+
+        // Show the score and lives on the top left
+        ctx.fillStyle = "white";
+        ctx.font = "18px Arial";
+        ctx.textAlign = "left";
+        ctx.fillText("Score: " + score + "   Lives: " + lives, 10, 25);
+
+        // Show the level and kills on the top right
+        ctx.textAlign = "right";
+        ctx.fillText("Level " + level + "  (" + kills + "/" + killsNeeded + ")", 590, 25);
+      }
+
+
+      // The words to show on each screen.
+      // Each one has two lines: a title and an instruction.
+      var texts = {
+        start:   ["STELLAR GALACTUS",              "Press ENTER to start"],
+        levelup: ["Level complete!",               "Press ENTER for level " + level],
+        over:    ["GAME OVER - Score: " + score,   "Press ENTER to try again"],
+        win:     ["YOU WIN! Score: " + score,      "Press ENTER to play again"]
+      };
+
+      // If the current screen has words, write them
+      if (texts[gameState]) {
+        message(texts[gameState][0], 280);
+        message(texts[gameState][1], 330);
+      }
+    }
