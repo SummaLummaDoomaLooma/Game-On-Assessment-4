@@ -44,3 +44,66 @@
   <canvas id="game" width="600" height="600"></canvas>
 
   <p>Left / Right arrows (or A / D) to move. Space to shoot.</p>
+
+
+
+  <script>
+    /* ===================================================
+       JAVASCRIPT = how the game WORKS
+       =================================================== */
+
+
+    /* ---------------------------------------------------
+       PART 1: SETUP
+       Get the canvas and make our game variables.
+       --------------------------------------------------- */
+
+    // Find the canvas on the page
+    var canvas = document.getElementById("game");
+
+    // "ctx" is the pen we use to draw on the canvas
+    var ctx = canvas.getContext("2d");
+
+
+    // What screen are we on? It can be:
+    // "start", "playing", "levelup", "over" or "win"
+    var gameState = "start";
+
+    // Which level we are on (1, 2 or 3)
+    var level = 1;
+
+    // Points scored
+    var score = 0;
+
+    // How many lives the player has left
+    var lives = 3;
+
+    // How many things we have destroyed on this level
+    var kills = 0;
+
+    // How many things we must destroy to finish this level
+    var killsNeeded = 8;
+
+    // Counts up every frame. When it gets big enough, a new thing appears.
+    var spawnTimer = 0;
+
+
+    // The player's ship.
+    // x and y are the top left corner of the ship.
+    var player = {
+      x: 280,
+      y: 540,
+      width: 40,
+      height: 30
+    };
+
+
+    // Lists (arrays) that hold everything in the game
+    var bullets = [];   // bullets we have shot
+    var rocks = [];     // asteroids
+    var enemies = [];   // enemy spaceships
+
+
+    // This remembers which keys are being held down
+    var keys = {};
+
