@@ -311,3 +311,96 @@
         }
       }
     }
+
+
+    /* ---------------------------------------------------
+       PART 5: UPDATE
+       Runs every frame. It MOVES everything and checks
+       what happened.
+       --------------------------------------------------- */
+
+    function update() {
+
+      // If we are not playing (menus), do nothing
+      if (gameState !== "playing") {
+        return;
+      }
+
+
+      // ----- Move the player -----
+
+      // Left arrow or A moves left
+      if (keys["arrowleft"] || keys["a"]) {
+        player.x -= 6;
+      }
+
+      // Right arrow or D moves right
+      if (keys["arrowright"] || keys["d"]) {
+        player.x += 6;
+      }
+
+      // Don't let the player leave the screen
+      if (player.x < 0) {
+        player.x = 0;
+      }
+      if (player.x > 560) {
+        player.x = 560;
+      }
+
+
+      // ----- Spawn new things -----
+
+      // Add 1 to the timer every frame
+      spawnTimer += 1;
+
+      // When the timer is big enough, make something new.
+      // Higher levels have a smaller number, so things appear faster.
+      if (spawnTimer > 70 - level * 10) {
+        spawnTimer = 0;
+        spawn();
+      }
+
+
+      // ----- Move everything -----
+
+      moveBullets();
+
+      // Rocks fall slowly, enemies fall a bit faster.
+      // Higher levels make both faster.
+      moveDown(rocks, 1 + level);
+      moveDown(enemies, 2 + level);
+
+
+      // ----- Check for hits -----
+
+      // Did our bullets hit anything?
+      shootThings(rocks);
+      shootThings(enemies);
+
+      // Did we crash into anything?
+      crashCheck(rocks);
+      crashCheck(enemies);
+
+
+      // ----- Check for game over -----
+
+      if (lives <= 0) {
+        gameState = "over";
+      }
+
+
+      // ----- Check for level complete -----
+
+      if (kills >= killsNeeded && gameState === "playing") {
+
+        if (level === 3) {
+          // We beat the last level, so we win the game!
+          gameState = "win";
+        }
+        else {
+          // Go up one level and show the level complete screen
+          level += 1;
+          gameState = "levelup";
+        }
+      }
+    }
