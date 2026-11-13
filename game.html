@@ -197,3 +197,117 @@
       keys[e.key.toLowerCase()] = false;
     });
 
+
+
+
+    /* ---------------------------------------------------
+       PART 4: HELPER FUNCTIONS
+       Small jobs that the rest of the game uses.
+       --------------------------------------------------- */
+
+    // Do two boxes touch each other?
+    // Returns true if they overlap, false if they don't.
+    function hit(a, b) {
+      return (
+        a.x < b.x + b.width &&    // a's left side is left of b's right side
+        a.x + a.width > b.x &&    // a's right side is right of b's left side
+        a.y < b.y + b.height &&   // a's top is above b's bottom
+        a.y + a.height > b.y      // a's bottom is below b's top
+      );
+    }
+
+
+    // Add a new rock or enemy at the top of the screen
+    function spawn() {
+
+      // Make a box at a random spot across the top
+      var thing = {
+        x: Math.random() * 560,
+        y: -40,
+        width: 40,
+        height: 40
+      };
+
+      // Level 1 only has rocks.
+      // On other levels it is a 50/50 chance of a rock or an enemy.
+      if (level === 1 || Math.random() < 0.5) {
+        rocks.push(thing);
+      }
+      else {
+        enemies.push(thing);
+      }
+    }
+
+
+    // Move bullets UP the screen
+    function moveBullets() {
+
+      // We loop BACKWARDS so we can safely remove bullets as we go
+      for (var i = bullets.length - 1; i >= 0; i--) {
+
+        // Move this bullet up by 8
+        bullets[i].y -= 8;
+
+        // If it left the top of the screen, delete it
+        if (bullets[i].y < 0) {
+          bullets.splice(i, 1);
+        }
+      }
+    }
+
+
+    // Move a list of rocks or enemies DOWN the screen
+    function moveDown(list, speed) {
+
+      // Loop backwards again so removing is safe
+      for (var i = list.length - 1; i >= 0; i--) {
+
+        // Move this thing down by "speed"
+        list[i].y += speed;
+
+        // If it went off the bottom of the screen, delete it
+        if (list[i].y > 600) {
+          list.splice(i, 1);
+        }
+      }
+    }
+
+
+    // Check if any bullet hit anything in a list (rocks or enemies)
+    function shootThings(list) {
+
+      // Go through every rock/enemy in the list
+      for (var i = list.length - 1; i >= 0; i--) {
+
+        // For each one, go through every bullet
+        for (var j = bullets.length - 1; j >= 0; j--) {
+
+          // Did this bullet touch this thing?
+          if (hit(bullets[j], list[i])) {
+
+            bullets.splice(j, 1);   // the bullet is used up, remove it
+            list.splice(i, 1);      // the rock/enemy is destroyed, remove it
+
+            score += 10;            // get 10 points
+            kills += 1;             // one step closer to beating the level
+
+            break;                  // this thing is gone, so stop checking bullets
+          }
+        }
+      }
+    }
+
+
+    // Check if the player crashed into anything in a list
+    function crashCheck(list) {
+
+      for (var i = list.length - 1; i >= 0; i--) {
+
+        // Did the player touch this thing?
+        if (hit(player, list[i])) {
+
+          list.splice(i, 1);   // remove the thing we crashed into
+          lives -= 1;          // lose a life
+        }
+      }
+    }
