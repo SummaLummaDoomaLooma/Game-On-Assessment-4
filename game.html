@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Stellar Galactus</title>
+
+  <style>
+    /* ===================================================
+       CSS = how the page LOOKS
+       =================================================== */
+
+    /* Keeps the page away from the edges of phone screens */
+    :root {
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    /* Dark page, white text, everything in the middle */
+    body {
+      background: #111111;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    /* The game screen: black with a white border */
+    canvas {
+      background: black;
+      border: 2px solid white;
+      max-width: 100%;
+    }
+  </style>
+</head>
