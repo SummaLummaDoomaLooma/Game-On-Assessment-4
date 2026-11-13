@@ -479,3 +479,27 @@
         message(texts[gameState][1], 330);
       }
     }
+
+
+    /* ---------------------------------------------------
+       PART 7: THE GAME LOOP
+       This makes the game run. It repeats about 60 times
+       every second: move everything, then draw everything.
+       --------------------------------------------------- */
+
+    function loop() {
+
+      update();   // move things and check for hits
+      draw();     // paint the new picture
+
+      // Ask the browser to run loop() again for the next frame
+      requestAnimationFrame(loop);
+    }
+
+    // Start the loop for the first time
+    loop();
+
+  </script>
+</body>
+
+</html>
