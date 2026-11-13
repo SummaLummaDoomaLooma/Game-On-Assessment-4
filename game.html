@@ -107,3 +107,33 @@
     // This remembers which keys are being held down
     var keys = {};
 
+
+    /* ---------------------------------------------------
+       PART 2: STARTING A LEVEL
+       This gets everything ready for a new level.
+       --------------------------------------------------- */
+
+    function startLevel() {
+
+      // Start counting kills from zero
+      kills = 0;
+
+      // Harder levels need more kills:
+      // level 1 = 8, level 2 = 11, level 3 = 14
+      killsNeeded = 5 + level * 3;
+
+      // Reset the spawn timer
+      spawnTimer = 0;
+
+      // Empty all the lists so the screen is clear
+      bullets = [];
+      rocks = [];
+      enemies = [];
+
+      // Put the player back in the middle
+      player.x = 280;
+
+      // Now the game can begin!
+      gameState = "playing";
+    }
+
